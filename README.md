@@ -19,7 +19,7 @@ The visualizations were built using Processing, and the program utilizes the osc
 * Open up the TouchOSC app on your iOS device
 * Open up TouchOSC's settings page and click on the OSC menu under the "Connections" section
 * Make sure "Enabled" is set to on
-* Change "Host" to the IP address of your host computer (on Linux this address can be found using the "ifconfig" command)
+* Change "Host" to the IP address of your host computer (on Linux this address can be found using the `ifconfig` command)
 * Change "Port (outgoing)" to the port your host computer will be listening for messages on
 * Change "Port (incomnig) to the port you want you iOS device to listen for messages on
 * If the bluetooth pairing and wifi connections are working, the "Local IP address" will be on the same subnet as your "Host" IP address
@@ -30,3 +30,11 @@ The visualizations were built using Processing, and the program utilizes the osc
 * In `void setup()` you will see `oscP5 = new OscP5(this, <PORT_NO>);`. Change PORT_NO to the "Port (outgoing)" port you configured in TouchOSC earlier
 * On the next line you will see `dest = new NetAddress("IP_ADDRESS", <PORT_NO>);` and you should change IP_ADDRESS to the "Local IP address" in the TouchOSC app, and PORT_NO to the same port you configured as "Port (incoming)"
 * Run the processing sketch and if all is configured properly you should see the visualizations dynamically change as you mess around with the TouchOSC interface!
+
+## Future Work
+#### Visualization Options
+So far there are two visualization options, one is a colorful geometric visualizer that pairs well with electronic music, pop, and even fast-paced alternative rock. The second is a lightning storm that looks awesome behind some heavy metal jams. I am hoping to expand eventually to add many more options to accomadate several different styles of music.
+#### Web Application
+Ideally I would also like to port my Processing sketch over to P5.js so I could host this on my website and have people be able to connect that way.
+#### Flexibility for changing Hardware Input
+Right now the Processing sketch could theoretically take input from anything -- accelerometers, microphones, etc. However there needs to be a way to wrap that data in OSC messages. I would like to make an intermediate OSC forwarder that could take input from a variety of different tool and then forward it to the program in OSC messages that it can interpret and understand.
