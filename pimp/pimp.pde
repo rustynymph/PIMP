@@ -1,3 +1,35 @@
+/*
+Project Pimp
+Author: Annie Kelly
+Date: 2/2016
+
+Visualization 1:
+================
+fader1 - color of oscillating dots
+fader2 - amount of shooting circle lines on border of circle grid
+fader3 - fills little circles in dot matrix
+fader4 - changes speed of dot matrix
+fader5 - speed of flashing screen when flashBg enabled
+toggle1 - flashing background
+toggle2 - switch to visualization 2
+toggle3 - nothing
+toggle4 - bright colors instead of dull
+accelerometer - rotates the canvas
+
+Visualization 2:
+================
+fader1 - lightning strike frequency
+fader2 - r
+fader3 - g
+fader4 - b
+fader5 - nothing
+toggle1 - nothing
+toggle2 - switch to visualization 1
+toggle3 - nothing
+toggle4 - nothing
+accelerometer - nothing
+*/
+
 import oscP5.*;
 import netP5.*;
 import java.util.Arrays;
