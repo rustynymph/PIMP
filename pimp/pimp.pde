@@ -75,11 +75,11 @@ float f1, f2, f3, f4, f5, t1, t2, t3, t4, accX, accY, accZ;
 
 void setup(){
   oscP5 = new OscP5(this, 7001); 
-  dest = new NetAddress("10.201.26.178", 6000);
+  //dest = new NetAddress("10.201.26.178", 6000); not actually important...
 
   size(1900, 1000);
   smooth();
-  frameRate(30);
+  //frameRate(30);
 
   /* lightning setup */
   meanDistance = 1000*.5;
@@ -328,14 +328,14 @@ void oscEvent(OscMessage theOscMessage) {
       lineThreshold = map(f2, 0, 1, 24, 0);
       pointFill = (int)map(f3, 0, 1, 0, 255);
       flashBg = (int)t1 & 1;
-      moduloFlash = (int)map(f5, 0, 1, 30, 1);
+      moduloFlash = (int)map(f5, 0, 1, 15, 1);
       if (abs(accX) > 0.2){
         rotAmount = map(accX, -1, 1, -0.2, 0.2);    
       } else {
         rotAmount = 0;
       }    
     } else {
-        moduloBolt = (int)map(f1, 0, 1, 5, 1);
+        moduloBolt = (int)map(f1, 0, 1, 3, 1);
         counterBolt = moduloBolt;
         rl = (int)map(f2, 0, 1, 0, 255);
         gl = (int)map(f3, 0, 1, 0, 255);
@@ -457,17 +457,6 @@ int randomSign(){
     return (int)(num/abs(num));
 }
  
-color randomColor(){
-  return color(random(0,100),99,99);
-}
- 
-color slightlyRandomColor(color inputCol,float length){
-  float h = hue(inputCol);
-  h = (h+random(-length,length))%100;
-  return color(h,99,99);
-}
-
-
 class lightningBolt{
   float lineWidth0,theta,x0,y0,x1,y1,x2,y2,straightJump,straightJumpMax,straightJumpMin,lineWidth;
   color myColor;
@@ -485,10 +474,6 @@ class lightningBolt{
     straightJumpMin = jumpMin;
     straightJumpMax = jumpMax;
     myColor = inputColor;
-    //it's a wandering line that goes straight for a while,
-    //then does a jagged jump (large dTheta), repeats.
-    //it does not aim higher than thetaMax
-    //(where theta= 0 is down)
     straightJump = random(straightJumpMin,straightJumpMax);
   }
   
@@ -506,9 +491,6 @@ class lightningBolt{
       straightJump = random(straightJumpMin,straightJumpMax);
       x2 = x1-straightJump*cos(theta-HALF_PI);
       y2 = y1-straightJump*sin(theta-HALF_PI);
-       
-      if(randomColors)
-        myColor = slightlyRandomColor(myColor,straightJump);
        
       lineWidth = map(y2, height,y0, 1,lineWidth0);
       if(lineWidth<0)
