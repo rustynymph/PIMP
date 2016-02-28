@@ -25,7 +25,6 @@ public class pimp extends PApplet {
 OscP5 oscP5;
 NetAddress dest;
 
-
 /* lightning declarations */
 float maxDTheta = PI/10;
 float minDTheta = PI/20;
@@ -188,9 +187,9 @@ public void setup(){
 public void draw(){
 
   if (visualiztion == 0){ // show electronic / pop visualization
-    rotate(-rotated);
+    //rotate(-rotated);
     rotate(rotAmount);
-    rotated = rotAmount;
+    //rotated = rotAmount;
 
     if (flashBg){
       flash = flash ^ 1;
@@ -320,9 +319,6 @@ public void oscEvent(OscMessage theOscMessage) {
           accX = theOscMessage.get(0).floatValue();
           accY = theOscMessage.get(1).floatValue();
           accZ = theOscMessage.get(2).floatValue();
-          println(accX);
-          println(accY);
-          println(accZ);
    }
 
   visualiztion = (int)t2;
@@ -334,7 +330,11 @@ public void oscEvent(OscMessage theOscMessage) {
     } else {
       flashBg = false;
     }
-    rotAmount = map(f4, 0, 1, -0.2f, 0.2f);    
+    if (abs(accX) > 0.2f){
+      rotAmount = map(accX, -1, 1, -0.2f, 0.2f);    
+    } else {
+      rotAmount = 0;
+    }    
   } else {
       moduloBolt = (int)map(f1, 0, 1, 60, 1);
       counter = moduloBolt;
@@ -350,7 +350,7 @@ public void oscEvent(OscMessage theOscMessage) {
       if (rl2 < 0){ rl2 = 0;}
       if (bl2 < 0){ bl2 = 0;}
       if (gl2 < 0){ gl2 = 0;}
-      skyColor = color(rl2, bl2, gl2, 10);
+      skyColor = color(rl2, gl2, bl2, 10);
   }
 
 

@@ -167,9 +167,9 @@ void setup(){
 void draw(){
 
   if (visualiztion == 0){ // show electronic / pop visualization
-    rotate(-rotated);
+    //rotate(-rotated);
     rotate(rotAmount);
-    rotated = rotAmount;
+    //rotated = rotAmount;
 
     if (flashBg){
       flash = flash ^ 1;
@@ -310,7 +310,11 @@ void oscEvent(OscMessage theOscMessage) {
     } else {
       flashBg = false;
     }
-    rotAmount = map(f4, 0, 1, -0.2, 0.2);    
+    if (abs(accX) > 0.2){
+      rotAmount = map(accX, -1, 1, -0.2, 0.2);    
+    } else {
+      rotAmount = 0;
+    }    
   } else {
       moduloBolt = (int)map(f1, 0, 1, 60, 1);
       counter = moduloBolt;
@@ -326,7 +330,7 @@ void oscEvent(OscMessage theOscMessage) {
       if (rl2 < 0){ rl2 = 0;}
       if (bl2 < 0){ bl2 = 0;}
       if (gl2 < 0){ gl2 = 0;}
-      skyColor = color(rl2, bl2, gl2, 10);
+      skyColor = color(rl2, gl2, bl2, 10);
   }
 
 
