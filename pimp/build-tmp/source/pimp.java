@@ -51,21 +51,16 @@ int moduloBolt;
 int counter;
 
 /* Oscillating circle declarations */
-int gridLeft;
-int gridRight;
-int gridTop;
-int gridBottom;
-int colorIndex;
-int colorMode;
+int gridLeft, gridRight, gridTop, gridBottom, colorIndex, colorMode;
 float noiseX, noiseY;
 ArrayList<Oscillator> oscillators;
 float r1, r2, g1, g2, b1, b2;
-int[] r1s = {0,   106,  0,    20,   255};
-int[] r2s = {255, 20,   13,   255,  255};
-int[] g1s = {139, 20,   8,    255,  238};
-int[] g2s = {20,  255,  255,  239,  0};
-int[] b1s = {139, 255,  255,  55,   0};
-int[] b2s = {147, 255,  0,    20,   0};
+int[] r1s =     {0,   106,  0,    20,   255};
+int[] r2s =     {255, 20,   13,   255,  255};
+int[] g1s =     {139, 20,   8,    255,  238};
+int[] g2s =     {20,  255,  255,  239,  0};
+int[] b1s =     {139, 255,  255,  55,   0};
+int[] b2s =     {147, 255,  0,    20,   0};
 int[] r1sDull = {199, 0,   0,    0,   166};
 int[] r2sDull = {0,   0,   0,   204,  166};
 int[] g1sDull = {0,   0,   130,  133,  155};
@@ -73,10 +68,9 @@ int[] g2sDull = {0,   130, 133,  201,  0};
 int[] b1sDull = {146, 133, 133,  15,   0};
 int[] b2sDull = {153, 133, 15,    0,   0};
 float lineThreshold = 25;
-int flashBg;
-int moduloFlash;
+int flashBg, moduloFlash;
 int flash = 1;
-int visualiztion = 0; //keeps track of which visualization to display
+int visualization = 0; //keeps track of which visualization to display
 
 /* Dot matrix declarations */
 int num_points = 20;
@@ -86,7 +80,6 @@ Point[] points2 = new Point[num_points];
 Point[][] pointmapping2 = new Point[num_points][2];
 int c;
 int edgeDistance = 200;
-float rotated;
 float rotAmount;
 int pointFill;
 
@@ -117,7 +110,6 @@ public void setup(){
   gridRight = gridLeft + 450;
   gridTop = -225;
   gridBottom = gridTop + 450;  
-  rotated = 0;
   rotAmount = 0;
 
   Oscillator circle;
@@ -198,7 +190,7 @@ public void setup(){
  
 public void draw(){
 
-  if (visualiztion == 0){ // show electronic / pop visualization
+  if (visualization == 0){ // show electronic / pop visualization
     translate(width/2, height/2); // (0,0) is now at the center of the sketch
     rotate(rotAmount);
     if (flashBg == 1){
@@ -217,8 +209,8 @@ public void draw(){
     } else{
       background(0);
     }
-    stroke(-1,150);
-    line(-width/2, 0, width/2, 0);
+    //stroke(-1,150); //horitzontal line accross center of screen
+    //line(-width, 0, width, 0);
 
     float x1, x2, y1, y2;
     for (c = 0; c < points.length; c++){
@@ -341,8 +333,8 @@ public void oscEvent(OscMessage theOscMessage) {
           accZ = theOscMessage.get(2).floatValue();
    }
 
-  visualiztion = (int)t2;
-  if (visualiztion == 0){
+  visualization = (int)t2;
+  if (visualization == 0){
       colorMode = (int)t4;
       colorIndex = (int)map(f1, 0, 1, 0, 4);
       lineThreshold = map(f2, 0, 1, 24, 0);
@@ -350,7 +342,7 @@ public void oscEvent(OscMessage theOscMessage) {
       flashBg = (int)t1 & 1;
       moduloFlash = (int)map(f5, 0, 1, 15, 1);
       if (abs(accX) > 0.2f){
-        rotAmount = map(accX, -1, 1, -0.2f, 0.2f);    
+        rotAmount = map(accX, -1, 1, -1, 1);    
       } else {
         rotAmount = 0;
       }    
