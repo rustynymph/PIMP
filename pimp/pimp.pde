@@ -45,7 +45,7 @@ int[] g2s = {20,  255,  255,  239,  0};
 int[] b1s = {139, 255,  255,  55,   0};
 int[] b2s = {147, 255,  0,    20,   0};
 float lineThreshold = 25;
-boolean flashBg;
+int flashBg;
 int flash = 1;
 int visualiztion = 0; //keeps track of which visualization to display
 
@@ -59,6 +59,7 @@ int c;
 int edgeDistance = 200;
 float rotated;
 float rotAmount;
+int pointFill;
 
 /* Initializing variables to capture OSC values */
 float f1, f2, f3, f4, f5, t1, t2, t3, t4, accX, accY, accZ;
@@ -82,16 +83,20 @@ void setup(){
   skyColor = color(0,0,10,20);  
 
   /*    oscillating circle grid setup    */
-  gridLeft = (width / 2) - 225;
+  //gridLeft = (width / 2) - 225;
+  //gridRight = gridLeft + 450;
+  //gridTop = (height / 2) - 225;
+  //gridBottom = gridTop + 450;
+  gridLeft = -225;
   gridRight = gridLeft + 450;
-  gridTop = (height / 2) - 225;
-  gridBottom = gridTop + 450;
+  gridTop = -225;
+  gridBottom = gridTop + 450;  
   rotated = 0;
   rotAmount = 0;
 
   Oscillator circle;
   colorIndex = 0; 
-  flashBg = false;
+  flashBg = 0;
   noiseX = random(100);
   noiseY = random(100);
   oscillators = new ArrayList<Oscillator>();
@@ -113,6 +118,7 @@ void setup(){
 
   /*  floating dot / line matrix setup */
   num_points = 20;
+  pointFill = 100;
   float size;
   float x_pos;
   float y_pos;
@@ -123,7 +129,7 @@ void setup(){
   Point point;
   while (i < num_points){
     size = random(5,15);
-    x_pos = random(edgeDistance/2, gridLeft - edgeDistance);
+    x_pos = random((-width/2)+edgeDistance/2, gridLeft - edgeDistance);
     y_pos = random(gridTop, gridBottom);   
     point = new Point(x_pos, y_pos, size, 0);
     points[i] = point;
@@ -143,7 +149,7 @@ void setup(){
 
   while (i2 < num_points){
     size = random(5,15);
-    x_pos = random(gridRight + edgeDistance, width - edgeDistance/2);
+    x_pos = random(gridRight + edgeDistance, width/2 - edgeDistance/2);
     y_pos = random(gridTop, gridBottom);   
     point = new Point(x_pos, y_pos, size, 1);
     points2[i2] = point;
@@ -167,11 +173,10 @@ void setup(){
 void draw(){
 
   if (visualiztion == 0){ // show electronic / pop visualization
-    //rotate(-rotated);
+    translate(width/2, height/2); // (0,0) is now at the center of the sketch
     rotate(rotAmount);
-    //rotated = rotAmount;
 
-    if (flashBg){
+    if (flashBg == 1){
       flash = flash ^ 1;
       if (flash == 1){
         background(54, 54, 54);
@@ -182,7 +187,7 @@ void draw(){
       background(0);
     }
     stroke(-1,150);
-    line(-width, height/2, width, height/2);
+    line(-width/2, 0, width/2, 0);
 
     float x1, x2, y1, y2;
     for (c = 0; c < points.length; c++){
@@ -303,37 +308,32 @@ void oscEvent(OscMessage theOscMessage) {
 
   visualiztion = (int)t2;
   if (visualiztion == 0){
-    colorIndex = (int)map(f1, 0, 1, 0, 4);
-    lineThreshold = map(f2, 0, 1, 24, 0);
-    if (t1 == 1.0){
-      flashBg = true;
+      colorIndex = (int)map(f1, 0, 1, 0, 4);
+      lineThreshold = map(f2, 0, 1, 24, 0);
+      pointFill = (int)map(f3, 0, 1, 0, 255);
+      flashBg = (int)t1 & 1;
+      if (abs(accX) > 0.2){
+        rotAmount = map(accX, -1, 1, -0.2, 0.2);    
+      } else {
+        rotAmount = 0;
+      }    
     } else {
-      flashBg = false;
+        moduloBolt = (int)map(f1, 0, 1, 60, 1);
+        counter = moduloBolt;
+        rl = (int)map(f2, 0, 1, 0, 255);
+        gl = (int)map(f3, 0, 1, 0, 255);
+        bl = (int)map(f4, 0, 1, 0, 255);
+
+        boltColor = color(rl, gl, bl);
+
+        rl2 = rl - (int)map(rl, 0, 255, 50, 100);
+        gl2 = gl - (int)map(gl, 0, 255, 50, 100);
+        bl2 = bl - (int)map(bl, 0, 255, 50, 100);
+        if (rl2 < 0){ rl2 = 0;}
+        if (bl2 < 0){ bl2 = 0;}
+        if (gl2 < 0){ gl2 = 0;}
+        skyColor = color(rl2, gl2, bl2, 10);
     }
-    if (abs(accX) > 0.2){
-      rotAmount = map(accX, -1, 1, -0.2, 0.2);    
-    } else {
-      rotAmount = 0;
-    }    
-  } else {
-      moduloBolt = (int)map(f1, 0, 1, 60, 1);
-      counter = moduloBolt;
-      rl = (int)map(f2, 0, 1, 0, 255);
-      gl = (int)map(f3, 0, 1, 0, 255);
-      bl = (int)map(f4, 0, 1, 0, 255);
-
-      boltColor = color(rl, gl, bl);
-
-      rl2 = rl - (int)map(rl, 0, 255, 50, 100);
-      gl2 = gl - (int)map(gl, 0, 255, 50, 100);
-      bl2 = bl - (int)map(bl, 0, 255, 50, 100);
-      if (rl2 < 0){ rl2 = 0;}
-      if (bl2 < 0){ bl2 = 0;}
-      if (gl2 < 0){ gl2 = 0;}
-      skyColor = color(rl2, gl2, bl2, 10);
-  }
-
-
 }
 /*  =====================================================================================================  */
 
@@ -390,7 +390,7 @@ class Point{
       d = random(8,15);
     }
     if (side == 0){
-      if ((x + angle_x)< edgeDistance){
+      if ((x + angle_x)< (-width/2)+edgeDistance){
         angle_x = random(1, 3);
       }
       else if ((x + angle_x) > gridLeft-edgeDistance){
@@ -400,7 +400,7 @@ class Point{
        if ((x + angle_x)< gridRight+edgeDistance){
         angle_x = random(1, 3);
       }
-      else if ((x + angle_x) > width-edgeDistance){
+      else if ((x + angle_x) > (width/2)-edgeDistance){
         angle_x = random(-3, -1);
       }
     }
@@ -416,19 +416,15 @@ class Point{
   }
 
   void connect(float x1, float y1, float x2, float y2){
-    //noStroke();
-    //filter(BLUR, 6);
-    stroke(255,255,255,100);
+    stroke(255,255,255,20);
     strokeWeight(1);
     line(x, y, x1, y1);   
     line(x, y, x2, y2);   
   }
 
   void display(){
-    //noStroke();
-    //filter(BLUR, 2);
     stroke(255,255,255);
-    fill(255,255,255, 100);
+    fill(pointFill);
     ellipse(x, y, d, d);
   }
 }
