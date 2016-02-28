@@ -35,6 +35,7 @@ int gridRight;
 int gridTop;
 int gridBottom;
 int colorIndex;
+int colorMode;
 float noiseX, noiseY;
 ArrayList<Oscillator> oscillators;
 float r1, r2, g1, g2, b1, b2;
@@ -44,6 +45,12 @@ int[] g1s = {139, 20,   8,    255,  238};
 int[] g2s = {20,  255,  255,  239,  0};
 int[] b1s = {139, 255,  255,  55,   0};
 int[] b2s = {147, 255,  0,    20,   0};
+int[] r1sDull = {199, 0,   0,    0,   166};
+int[] r2sDull = {0,   0,   0,   204,  166};
+int[] g1sDull = {0,   0,   130,  133,  155};
+int[] g2sDull = {0,   130, 133,  201,  0};
+int[] b1sDull = {146, 133, 133,  15,   0};
+int[] b2sDull = {153, 133, 15,    0,   0};
 float lineThreshold = 25;
 int flashBg;
 int flash = 1;
@@ -83,10 +90,6 @@ void setup(){
   skyColor = color(0,0,10,20);  
 
   /*    oscillating circle grid setup    */
-  //gridLeft = (width / 2) - 225;
-  //gridRight = gridLeft + 450;
-  //gridTop = (height / 2) - 225;
-  //gridBottom = gridTop + 450;
   gridLeft = -225;
   gridRight = gridLeft + 450;
   gridTop = -225;
@@ -250,7 +253,11 @@ class Oscillator{
         drawCircleLine(pos.x, pos.y);
       }
     } else{
-      fill(map(sin(rad), -1, 1, r1s[colorIndex], r2s[colorIndex]), map(sin(rad), -1, 1, g1s[colorIndex], g2s[colorIndex]), map(sin(rad), -1, 1, b1s[colorIndex], b2s[colorIndex]));      
+      if(colorMode == 1){ //use bright colors
+        fill(map(sin(rad), -1, 1, r1s[colorIndex], r2s[colorIndex]), map(sin(rad), -1, 1, g1s[colorIndex], g2s[colorIndex]), map(sin(rad), -1, 1, b1s[colorIndex], b2s[colorIndex]));      
+      }else{
+        fill(map(sin(rad), -1, 1, r1sDull[colorIndex], r2sDull[colorIndex]), map(sin(rad), -1, 1, g1sDull[colorIndex], g2sDull[colorIndex]), map(sin(rad), -1, 1, b1sDull[colorIndex], b2sDull[colorIndex]));
+      }      
     }
     ellipse(pos.x, pos.y, diameter, diameter);
     rad += map(noise(noiseX + pos.x * 0.05, noiseY + pos.y * 0.05), 0, 1, PI / 128, PI / 6);
@@ -308,6 +315,7 @@ void oscEvent(OscMessage theOscMessage) {
 
   visualiztion = (int)t2;
   if (visualiztion == 0){
+      colorMode = (int)t4;
       colorIndex = (int)map(f1, 0, 1, 0, 4);
       lineThreshold = map(f2, 0, 1, 24, 0);
       pointFill = (int)map(f3, 0, 1, 0, 255);
