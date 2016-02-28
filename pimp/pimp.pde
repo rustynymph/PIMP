@@ -62,6 +62,9 @@ int c;
 int edgeDistance = 200;
 float rotAmount;
 int pointFill;
+int moduloDotMove = 60;
+int dotSpeedMin = 1;
+int dotSpeedMax = 10;
 
 /* Initializing variables to capture OSC values */
 float f1, f2, f3, f4, f5, t1, t2, t3, t4, accX, accY, accZ;
@@ -319,6 +322,7 @@ void oscEvent(OscMessage theOscMessage) {
       colorIndex = (int)map(f1, 0, 1, 0, 4);
       lineThreshold = map(f2, 0, 1, 24, 0);
       pointFill = (int)map(f3, 0, 1, 0, 255);
+      moduloDotMove = (int)map(f4, 0, 1, 60, 5);
       flashBg = (int)t1 & 1;
       moduloFlash = (int)map(f5, 0, 1, 15, 1);
       if (abs(accX) > 0.2){
@@ -351,8 +355,8 @@ void drawCircleLine(float x, float y) {
   int x_offset = 0;
   int y_offset = 0;
 
-  if ((x == gridLeft && y == gridTop) || (x == gridLeft && y == gridBottom) || (y == gridTop && x == gridRight) || (y == gridBottom && x == gridRight)){
-    i = 10;
+  if ((x == gridLeft && y == gridTop) || (x == gridLeft && y == gridBottom) || (y == gridTop && x == gridRight) || (y == gridBottom && x == gridRight)){ //then the circle is on a corner
+    i = 5;
   }
   else {
     if (x == gridLeft){
@@ -369,7 +373,7 @@ void drawCircleLine(float x, float y) {
         y_offset = -20;
     }
   } 
-  while(i < 10){
+  while(i < 5){
     ellipse(x, y, 10, 10);
     x = x - x_offset;
     y = y - y_offset;
@@ -392,7 +396,7 @@ class Point{
   }
 
   void move(){
-    if ((traveled % 60 == 0) || traveled == 0){
+    if ((traveled % moduloDotMove == 0) || traveled == 0){
       traveled = 0;
       angle_x = random(-3, 3);
       angle_y = random(-3, 3);
@@ -400,25 +404,25 @@ class Point{
     }
     if (side == 0){
       if ((x + angle_x)< (-width/2)+edgeDistance){
-        angle_x = random(1, 3);
+        angle_x = random(dotSpeedMin, dotSpeedMax);
       }
       else if ((x + angle_x) > gridLeft-edgeDistance){
-        angle_x = random(-3, -1);
+        angle_x = random(-dotSpeedMax, -dotSpeedMin);
       }      
     } else{
        if ((x + angle_x)< gridRight+edgeDistance){
-        angle_x = random(1, 3);
+        angle_x = random(dotSpeedMin, dotSpeedMax);
       }
       else if ((x + angle_x) > (width/2)-edgeDistance){
-        angle_x = random(-3, -1);
+        angle_x = random(-dotSpeedMax, -dotSpeedMin);
       }
     }
 
     if ((y + angle_y) < gridTop){
-      angle_y = random(1, 3);
+      angle_y = random(dotSpeedMin, dotSpeedMax);
     }
     else if ((y + angle_y) > gridBottom){
-      angle_y = random(-3, -1);
+      angle_y = random(-dotSpeedMax, -dotSpeedMin);
     }
     x = x + angle_x;
     y = y + angle_y;
