@@ -26,8 +26,9 @@ lightningBolt bolt;
 float lastStrike = 0;
 float nextStrikeInNms = 0;
 float meanDistance = 0;
-int counter;
+int counterBolt;
 int moduloBolt;
+int counter;
 
 /* Oscillating circle declarations */
 int gridLeft;
@@ -53,6 +54,7 @@ int[] b1sDull = {146, 133, 133,  15,   0};
 int[] b2sDull = {153, 133, 15,    0,   0};
 float lineThreshold = 25;
 int flashBg;
+int moduloFlash;
 int flash = 1;
 int visualiztion = 0; //keeps track of which visualization to display
 
@@ -72,7 +74,7 @@ int pointFill;
 float f1, f2, f3, f4, f5, t1, t2, t3, t4, accX, accY, accZ;
 
 void setup(){
-  oscP5 = new OscP5(this, 7000); 
+  oscP5 = new OscP5(this, 7001); 
   dest = new NetAddress("10.201.26.178", 6000);
 
   size(1900, 1000);
@@ -82,6 +84,7 @@ void setup(){
   /* lightning setup */
   meanDistance = 1000*.5;
   counter = 0;
+  counterBolt = 0;
   moduloBolt = 30;
   rl = 0;
   gl = 0;
@@ -178,14 +181,19 @@ void draw(){
   if (visualiztion == 0){ // show electronic / pop visualization
     translate(width/2, height/2); // (0,0) is now at the center of the sketch
     rotate(rotAmount);
-
     if (flashBg == 1){
-      flash = flash ^ 1;
-      if (flash == 1){
-        background(54, 54, 54);
+      counter++;
+      if (counter % moduloFlash == 0){
+        counter = 0;
+        flash = flash ^ 1;
+        if (flash == 1){
+          background(54, 54, 54);
+        } else{
+           background(0);
+        }
       } else{
-         background(0);
-      }
+           background(0);
+        }
     } else{
       background(0);
     }
@@ -222,9 +230,9 @@ void draw(){
   } else{ // show heavy metal visualization
       clear();
       background(0);
-      counter++;
-      if (counter % moduloBolt == 0){
-        counter = 0;
+      counterBolt++;
+      if (counterBolt % moduloBolt == 0){
+        counterBolt = 0;
         bolt = new lightningBolt(random(0,width),0,random(minBoltWidth,maxBoltWidth),0,minJumpLength,maxJumpLength,boltColor);
         background(skyColor);    
         bolt.draw();
@@ -320,14 +328,15 @@ void oscEvent(OscMessage theOscMessage) {
       lineThreshold = map(f2, 0, 1, 24, 0);
       pointFill = (int)map(f3, 0, 1, 0, 255);
       flashBg = (int)t1 & 1;
+      moduloFlash = (int)map(f5, 0, 1, 30, 1);
       if (abs(accX) > 0.2){
         rotAmount = map(accX, -1, 1, -0.2, 0.2);    
       } else {
         rotAmount = 0;
       }    
     } else {
-        moduloBolt = (int)map(f1, 0, 1, 60, 1);
-        counter = moduloBolt;
+        moduloBolt = (int)map(f1, 0, 1, 5, 1);
+        counterBolt = moduloBolt;
         rl = (int)map(f2, 0, 1, 0, 255);
         gl = (int)map(f3, 0, 1, 0, 255);
         bl = (int)map(f4, 0, 1, 0, 255);
