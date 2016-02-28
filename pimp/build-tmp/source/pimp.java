@@ -22,8 +22,6 @@ public class pimp extends PApplet {
 
 
 
-
-
 OscP5 oscP5;
 NetAddress dest;
 
@@ -78,14 +76,13 @@ Point[] points = new Point[num_points];
 Point[][] pointmapping = new Point[num_points][2];
 Point[] points2 = new Point[num_points];
 Point[][] pointmapping2 = new Point[num_points][2];
-//PImage img;
 int c;
 int edgeDistance = 200;
 float rotated;
 float rotAmount;
 
 /* Initializing variables to capture OSC values */
-float f1, f2, f3, f4, f5, t1, t2, t3, t4;
+float f1, f2, f3, f4, f5, t1, t2, t3, t4, accX, accY, accZ;
 
 public void setup(){
   oscP5 = new OscP5(this, 7000); 
@@ -319,7 +316,14 @@ public void oscEvent(OscMessage theOscMessage) {
        if(theOscMessage.checkTypetag("f")) { // looking for 1 parameter
           t4 = theOscMessage.get(0).floatValue(); 
       }
-    }
+   } else if (theOscMessage.checkAddrPattern("/accxyz")==true) {
+          accX = theOscMessage.get(0).floatValue();
+          accY = theOscMessage.get(1).floatValue();
+          accZ = theOscMessage.get(2).floatValue();
+          println(accX);
+          println(accY);
+          println(accZ);
+   }
 
   visualiztion = (int)t2;
   if (visualiztion == 0){
