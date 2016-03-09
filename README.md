@@ -6,14 +6,15 @@ PIMP allows people to participate in musicial performances / jam sessions in way
 
 ## How does PIMP work?
 Project PIMP relies on the following technologies
-*  Processing
-*  OSC Protocol
-*  TouchOSC iOS Application
+*  Processing https://processing.org/
+*  OSC Protocol http://opensoundcontrol.org/introduction-osc
+*  TouchOSC iOS Application http://hexler.net/software/touchosc
 *  Bluetooth
 
 The visualizations were built using Processing, and the program utilizes the oscP5 and netP5 libraries. The user must connect their iOS device and their computer to the same wifi, then the user can connect their iOS device to the host computer via bluetooth. Performing both of these steps ensures that both devices are assigned unique IP addresses by the router's DHCP service, and that the two devices can speak to each other over a TCP socket. The Processing sketch is configured to receive messages from TouchOSC's its "Simple" layout, and can receive values from faders 1-5, and toggle buttons 1-4.
 
 ## How do I use PIMP?
+### Software Setup
 * Clone this repository
 * Connect your iOS device and computer to the same wifi network
 * Pair the two devices via bluetooth
@@ -31,6 +32,31 @@ The visualizations were built using Processing, and the program utilizes the osc
 * In `void setup()` you will see `oscP5 = new OscP5(this, <PORT_NO>);`. Change PORT_NO to the "Port (outgoing)" port you configured in TouchOSC earlier
 * On the next line you will see `dest = new NetAddress("IP_ADDRESS", <PORT_NO>);` and you should change IP_ADDRESS to the "Local IP address" in the TouchOSC app, and PORT_NO to the same port you configured as "Port (incoming)"
 * Run the processing sketch and if all is configured properly you should see the visualizations dynamically change as you mess around with the TouchOSC interface!
+
+### Controls
+####Visualization 1
+Fader 1 : colors of main circle grid
+Fader 2 : amount of circle beams shooting from border of circle grid
+Fader 3 : transparency of small floating dots
+Fader 4 : speed of small floating dots
+Fader 5 : frequency of background flashing mode
+Toggle 1 : enable/disable background flashing mode
+Toggle 2 : switch to visualization 2
+Toggle 3 : enable/disable sketch rotating
+Toggle 4 : not implemented
+Accelerometer : control tilt of sketch using x vector
+
+####Visualization 2
+Fader 1 : lightning strike frequency
+Fader 2 : background red value
+Fader 3 : background green value
+Fader 4 : background blue value
+Fader 5 : not implemented
+Toggle 1 : not implemented
+Toggle 2 : switch to visualization 1
+Toggle 3 : not implemented
+Toggle 4 : not implemented
+Accelerometer : not implemented
 
 ## Future Work
 #### Visualization Options
