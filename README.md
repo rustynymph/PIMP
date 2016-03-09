@@ -37,28 +37,28 @@ The visualizations were built using Processing, and the program utilizes the osc
 
 ### Controls
 ####Visualization 1
-Fader 1 : colors of main circle grid
-Fader 2 : amount of circle beams shooting from border of circle grid
-Fader 3 : transparency of small floating dots
-Fader 4 : speed of small floating dots
-Fader 5 : frequency of background flashing mode
-Toggle 1 : enable/disable background flashing mode
-Toggle 2 : switch to visualization 2
-Toggle 3 : enable/disable sketch rotating
-Toggle 4 : not implemented
-Accelerometer : control tilt of sketch using x vector
+Fader 1 : colors of main circle grid  
+Fader 2 : amount of circle beams shooting from border of circle grid  
+Fader 3 : transparency of small floating dots  
+Fader 4 : speed of small floating dots  
+Fader 5 : frequency of background flashing mode  
+Toggle 1 : enable/disable background flashing mode  
+Toggle 2 : switch to visualization 2  
+Toggle 3 : enable/disable sketch rotating  
+Toggle 4 : not implemented  
+Accelerometer : control tilt of sketch using x vector  
 
 ####Visualization 2
-Fader 1 : lightning strike frequency
-Fader 2 : background red value
-Fader 3 : background green value
-Fader 4 : background blue value
-Fader 5 : not implemented
-Toggle 1 : not implemented
-Toggle 2 : switch to visualization 1
-Toggle 3 : not implemented
-Toggle 4 : not implemented
-Accelerometer : not implemented
+Fader 1 : lightning strike frequency  
+Fader 2 : background red value  
+Fader 3 : background green value  
+Fader 4 : background blue value  
+Fader 5 : not implemented  
+Toggle 1 : not implemented  
+Toggle 2 : switch to visualization 1  
+Toggle 3 : not implemented  
+Toggle 4 : not implemented  
+Accelerometer : not implemented  
 
 ## Future Work
 #### Visualization Options
