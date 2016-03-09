@@ -35,8 +35,8 @@ The visualizations were built using Processing, and the program utilizes the osc
 * On the next line you will see `dest = new NetAddress("IP_ADDRESS", <PORT_NO>);` and you should change IP_ADDRESS to the "Local IP address" in the TouchOSC app, and PORT_NO to the same port you configured as "Port (incoming)"
 * Run the processing sketch and if all is configured properly you should see the visualizations dynamically change as you mess around with the TouchOSC interface!
 
-### Controls
-####Visualization 1
+### Controls and Visualizations
+####Visualization 1 Controls
 Fader 1 : colors of main circle grid  
 Fader 2 : amount of circle beams shooting from border of circle grid  
 Fader 3 : transparency of small floating dots  
@@ -48,7 +48,7 @@ Toggle 3 : enable/disable sketch rotating
 Toggle 4 : not implemented  
 Accelerometer : control tilt of sketch using x vector  
 
-####Visualization 2
+####Visualization 2 Controls
 Fader 1 : lightning strike frequency  
 Fader 2 : background red value  
 Fader 3 : background green value  
